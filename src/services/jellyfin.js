@@ -33,8 +33,6 @@ async function getJellyfinItem(jellyfinId) {
 }
 
 async function updateJellyfinTags(jellyfinId, tags) {
-  // Jellyfin 12 applies only the fields present in the body, so sending Tags
-  // leaves the rest of the item metadata unchanged.
   const response = await fetch(
     `${config.jellyfinUrl}/Items/${encodeURIComponent(jellyfinId)}`,
     {
