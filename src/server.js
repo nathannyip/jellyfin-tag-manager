@@ -4,7 +4,9 @@ const webhookRouter = require("./routes/webhook");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({
+  type: ["application/json", "text/plain"],
+}));
 
 app.get("/health", (req, res) => {
   res.status(200).json({
@@ -15,7 +17,7 @@ app.get("/health", (req, res) => {
 
 app.use("/webhook", webhookRouter);
 
-app.use((error, res, req) => {
+app.use((error, req, res, next) => {
   if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
     return res.status(400).json({
       success: false,
