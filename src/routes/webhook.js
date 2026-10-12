@@ -25,7 +25,7 @@ async function syncRequesterTags({ jellyfinId, title, itemType, requesters }) {
     return {
       success: true,
       status: "skipped",
-      message: "Jellyfin tags already include every requester",
+      message: "Jellyfin tags already include every tag",
       jellyfinId,
       title,
       itemType,
@@ -70,10 +70,19 @@ router.post("/jellyfin", async (req, res) => {
       Provider_tvdb: tvdbId,
     } = event;
 
-    if (!jellyfinId || !["Movie", "Series"].includes(itemType)) {
+    if (!["Movie", "Series"].includes(itemType)) {
+      return res.status(200).json({
+        success: true,
+        status: "skipped",
+        message: "Unsupported item type",
+        itemType,
+      });
+    }
+
+    if (!jellyfinId) {
       return res.status(400).json({
         success: false,
-        message: "Missing item ID or unsupported item type",
+        message: "Missing item ID",
       });
     }
 
