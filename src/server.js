@@ -15,7 +15,7 @@ app.get("/health", (req, res) => {
 
 app.use("/webhook", webhookRouter);
 
-app.use((error, _, res, _) => {
+app.use((error, res, req) => {
   if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
     return res.status(400).json({
       success: false,
